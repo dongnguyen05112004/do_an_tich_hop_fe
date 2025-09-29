@@ -104,7 +104,7 @@
                 class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
         <footer class="page-footer">
-            <p class="mb-0">Copyright © 2021. All right reserved.</p>
+            <p class="mb-0">Đông - Quang - Trọng - Đức - Trang</p>
         </footer>
     </div>
 
