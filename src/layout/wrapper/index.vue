@@ -69,6 +69,13 @@
                                                 </div>
                                             </a>
                                         </li>
+                                        <li class="nav-item mt-3">
+                                            <a class="nav-link" href="/danhmuccanhan">
+                                                <div class="menu-title">
+                                                    <h6>Danh mục cá nhân</h6>
+                                                </div>
+                                            </a>
+                                        </li>
                                     </ul>
                                     <div class="user-box dropdown d-flex align-items-center me-3">
                                         <div class="d-flex align-items-center"></div>

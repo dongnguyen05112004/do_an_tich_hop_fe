@@ -38,6 +38,13 @@
                                         </a>
                                     </li>
                                     <li class="nav-item mt-3">
+                                        <a class="nav-link" href="/quanlynhomgiadinh">
+                                            <div class="menu-title">
+                                                <h6>Quản lý nhóm gia đình</h6>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item mt-3">
                                         <a class="nav-link" href="/thongkegiadinh">
                                             <div class="menu-title">
                                                 <h6>Thống kê</h6>

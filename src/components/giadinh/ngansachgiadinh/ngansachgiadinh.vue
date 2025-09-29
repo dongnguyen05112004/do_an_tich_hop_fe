@@ -220,8 +220,31 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Tên ngân sách: đi chợ</p>
-                    <p>Hạn mức</p>
+                    <p class="mt-3">Tên Ngân Sách</p>
+                        <div class="input-group flex-nowrap">
+                            <input type="text" class="form-control" placeholder="" aria-label="Username"
+                                aria-describedby="addon-wrapping">
+                        </div>
+                        <p class="mt-3">Danh Mục</p>
+                        <div class="input-group">
+                            <select class="form-select" id="inputGroupSelect04"
+                                aria-label="Example select with button addon">
+                                <option selected></option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <p class="mt-3">Mô Tả</p>
+                        <div class="mb-3 mr-5">
+                            <label for="exampleFormControlTextarea1" class="form-label"></label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                        <p class="mt-3">Số Tiền </p>
+                        <div class="input-group flex-nowrap">
+                            <input type="text" class="form-control" placeholder="" aria-label="Username"
+                                aria-describedby="addon-wrapping">
+                        </div>
                     <div class="input-group flex-nowrap">
                         <input type="text" class="form-control" placeholder="" aria-label="Username"
                             aria-describedby="addon-wrapping">
@@ -243,13 +266,15 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa Ngân Sách</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    Bạn Có Chắc Muốn Xóa Ngân Sách Này Không?
+                <div class="modal-body" >
+                    <div class="alert alert-primary">
+                        Bạn Có Chắc Muốn Xóa Ngân Sách Này Không?
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Xóa</button>
-                </div>
+                <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn  mx-2 " style="background: #BBD2F4;" >Xóa</button>
+                        <button type="button" class="btn  mx-2" style="background: #BBD2F4;" data-bs-dismiss="modal">Hủy</button>
+                    </div>
             </div>
         </div>
     </div>

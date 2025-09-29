@@ -91,7 +91,19 @@ const routes = [
             {
                 path: "/phanquyen",
                 component: () => import("../components/giadinh/Phan_Quyen/PhanQuyen.vue"),
-            }
+            },
+            {
+                path: "/quanlynhomgiadinh",
+                component: () => import("../components/giadinh/quanlynhomgiadinh/index.vue"),
+            },
+            {
+                path: "/danhmucgiadinh",
+                component: () => import("../components/giadinh/danhmucgiadinh/index.vue"),
+            },
+            {
+                path: "/danhmuccanhan",
+                component: () => import("../components/danhmuc/index.vue"),
+            },
         ]
     },
 ]
