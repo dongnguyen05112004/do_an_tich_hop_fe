@@ -6,7 +6,6 @@
             <header>
                 <div class="topbar d-flex align-items-center" style="background-color: #DDE8F5;">
                     <nav class="navbar navbar-expand">
-
                         <div class="top-menu ms-auto">
                             <nav class="navbar navbar-expand-xl w-100">
                                 <!-- Nút logo/trang chính sang trái -->
@@ -17,7 +16,6 @@
                                     </button>
                                 </div>
                                 <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
-
                                     <li class="nav-item mt-3">
                                         <a class="nav-link" href="/home">
                                             <div class="menu-title">
@@ -28,14 +26,14 @@
                                     <li class="nav-item mt-3">
                                         <a class="nav-link" href="/thunhapgiadinh">
                                             <div class="menu-title">
-                                                <h6>Thu nhập gia đình</h6>
+                                                <h6>Thu nhập </h6>
                                             </div>
                                         </a>
                                     </li>
                                     <li class="nav-item mt-3">
                                         <a class="nav-link" href="/chitieugiadinh">
                                             <div class="menu-title">
-                                                <h6>Chi tiêu gia đình</h6>
+                                                <h6>Chi tiêu </h6>
                                             </div>
                                         </a>
                                     </li>
@@ -49,23 +47,34 @@
                                     <li class="nav-item mt-3">
                                         <a class="nav-link" href="/ngansachgiadinh">
                                             <div class="menu-title">
-                                                <h6>Ngân sách gia đình</h6>
+                                                <h6>Ngân sách</h6>
                                             </div>
                                         </a>
                                     </li>
                                     <li class="nav-item mt-3">
                                         <a class="nav-link" href="/nogiadinh">
                                             <div class="menu-title">
-                                                <h6>Quản lý nợ gia đình</h6>
+                                                <h6>Vay nợ</h6>
                                             </div>
                                         </a>
                                     </li>
                                     <li class="nav-item mt-3">
                                         <a class="nav-link" href="/tietkiemgiadinh">
                                             <div class="menu-title">
-                                                <h6>Tiết kiệm gia đình</h6>
+                                                <h6>Tiết kiệm</h6>
                                             </div>
                                         </a>
+                                    </li>
+                                    <li class="nav-item dropdown mt-3">
+                                        <a style="margin-top: -8.95px;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <h6 style="display: inline-block;">Tùy chọn</h6>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Quản lý Danh mục</a></li>
+                                            <li><a class="dropdown-item" href="#">Quản lý Ngân Sách</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="/thanhviengiadinh">Thành viên gia đình</a></li>
+                                        </ul>
                                     </li>
                                     <div class="user-box dropdown">
                                         <div class="d-flex align-items-center">
