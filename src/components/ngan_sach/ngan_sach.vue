@@ -165,7 +165,7 @@
                             </select>
                         </div>
                         <p class="mt-3">Mô Tả</p>
-                        <div class="mb-3 mr-5">
+                        <div class="mb-3 mr-5 ">
                             <label for="exampleFormControlTextarea1" class="form-label"></label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
