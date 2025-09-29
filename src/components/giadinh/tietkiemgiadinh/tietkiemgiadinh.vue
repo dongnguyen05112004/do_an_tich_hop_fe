@@ -1,8 +1,8 @@
-<template >
+<template>
     <div class="row">
-        <div class="col-6">
+        <div class="col-6 me-5">
             <h5>Tiết kiệm gia đình</h5>
-            <div class="card"  style="background-color: #DDE8F5; border-radius: 20px; height: 560px; overflow-y: auto;">
+            <div class="card" style="background-color: #DDE8F5; border-radius: 20px; height: 560px; overflow-y: auto;">
                 <div class="card-body">
                     <template v-for="(v, index) in l_tietkiem" :key="index">
                         <div class="card" style="border-radius: 20px;">
@@ -47,21 +47,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-4 ms-5">
             <h5>Thêm tiết kiệm gia đình</h5>
             <div class="card" style="background-color: #DDE8F5; border-radius: 20px;">
                 <div class="card-body">
                     <div class="mb-3">
-                        <label for="maNo" class="form-label">Mã tiết kiệm</label>
+                        <label for="maNo" class="form-label">Tên tiết kiệm</label>
                         <input v-model="them_tietkiem.ma_tiet_kiem" type="text" class="form-control" id="maNo"
                             placeholder="Nhập mã nợ">
                     </div>
-                    <div class="mb-3">
-                        <label for="noId" class="form-label">Mã tài khoản</label>
-                        <input v-model="them_tietkiem.ma_tai_khoan" type="text" class="form-control" id="noId"
-                            placeholder="Nhập tên nợ">
-                    </div>
-                    
                     <div class="mb-3">
                         <label for="startDate" class="form-label">Ngày bắt đầu</label>
                         <input v-model="them_tietkiem.ngay_bat_dau" type="date" class="form-control" id="startDate">
@@ -75,8 +69,72 @@
                         <input v-model="them_tietkiem.lai_suat" type="number" class="form-control" id="interestRate"
                             placeholder="Nhập lãi suất">
                     </div>
-                    <div class="text-end"><button class="btn btn-primary" v-on:click="themTietkiem()">Thêm</button></div>
+                    <div class="mb-3">
+                        <label for="interestRate" class="form-label">Ghi Chú</label>
+                        <textarea v-model="them_tietkiem.ghi_chu" class="form-control" aria-label="With textarea"
+                            id="interestRate" placeholder="Nhập ghi chú"></textarea>
+                    </div>
+                    <div class="text-end"><button class="btn btn-primary" v-on:click="themTietkiem()">Thêm</button>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <div class="card" style="background: #DDE8F5;">
+            <div>
+                <div class="row">
+                    <div class="col-lg-4 mt-3">
+
+                        <div class="card" style="background-color: #DDE8F5; border-radius: 20px;">
+                            <div class="card-body">
+                                <p>Ngày Bắt đầu</p>
+                                <input type="date" class="form-control" id="startDate">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4 mt-3 ">
+                        <div class="card" style="background-color: #DDE8F5; border-radius: 20px;">
+                            <div class="card-body">
+                                <p>Ngày Kết Thúc</p>
+                                <input type="date" class="form-control" id="endDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-3 ">
+                        <div class="card" style="background-color: #DDE8F5; border-radius: 20px;">
+                            <div class="card-body">
+                                <h5>Ngân Sách</h5>
+                                <p class="mt-3">{{ chenh_lech }} VNĐ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    
+                        <Bar v-if="isloading == true" id="my-chart-id" :options="chartOptions" :data="chartData" />
+                    
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="mb-3 mr-5">
+                            <div class="card">
+                                <div class="card-body " style="background-color: #DDE9F9">
+                                    <div class="card mt-3">
+                                        <div class="card-body">
+                                            <Label>Tóm Tắt</Label>
+                                            <label for="">Tiền tiết kiệm tháng trước : ... VNĐ</label>
+                                            <label for="">Tiền tiết kiệm cần hoàn thành : ... VNĐ</label>
+                                            <label for="">Tổng tiền tiết kiệm hiện tại : ... VNĐ</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -106,7 +164,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
                     <div class="mb-3">
                         <label for="maNo" class="form-label">Mã tiết kiệm </label>
                         <input v-model="sua_tietkiem.ma_tiet_kiem" type="text" class="form-control" id="maNo"
@@ -117,7 +174,6 @@
                         <input v-model="sua_tietkiem.ma_tai_khoan" type="text" class="form-control" id="noId"
                             placeholder="Nhập tên nợ">
                     </div>
-                    
                     <div class="mb-3">
                         <label for="startDate" class="form-label">Ngày bắt đầu</label>
                         <input v-model="sua_tietkiem.ngay_bat_dau" type="date" class="form-control" id="startDate">
@@ -143,13 +199,34 @@
 </template>
 <script>
 import axios from "axios";
+
+import { Bar } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 export default {
+    name: 'BarChart',
+    components: { Bar },
     data() {
         return {
+            chartData: {
+                labels: [],
+                datasets: [{
+                    backgroundColor: '#FFDE59',
+                    data: []
+                }]
+            },
+            chartOptions: {
+                responsive: true
+            },
+            isloading: false,
+            tong_tien: '',
+            tong_tien_thu: {},
+            tong_tien_chi: {},
+            chenh_lech: '',
             l_tietkiem: [],
-            them_tietkiem: { ma_tiet_kiem: '',ma_tai_khoan: '',ngay_bat_dau: '',ngay_ket_thuc: '',lai_suat: '' },
-            xoa_tietkiem: { ma_tiet_kiem: '',ma_tai_khoan: '',ngay_bat_dau: '',ngay_ket_thuc: '',lai_suat: '' },
-            sua_tietkiem: { ma_tiet_kiem: '',ma_tai_khoan: '',ngay_bat_dau: '',ngay_ket_thuc: '',lai_suat: '' }
+            them_tietkiem: { ma_tiet_kiem: '', ma_tai_khoan: '', ngay_bat_dau: '', ngay_ket_thuc: '', lai_suat: '' },
+            xoa_tietkiem: { ma_tiet_kiem: '', ma_tai_khoan: '', ngay_bat_dau: '', ngay_ket_thuc: '', lai_suat: '' },
+            sua_tietkiem: { ma_tiet_kiem: '', ma_tai_khoan: '', ngay_bat_dau: '', ngay_ket_thuc: '', lai_suat: '' }
         }
     },
     methods: {
@@ -235,13 +312,31 @@ export default {
                     });
                 });
         },
+        getdatachart() {
+
+            axios.get('http://127.0.0.1:8000/api/canhan/baocao')
+                .then((res) => {
+                    // clone object để reactive
+                    this.chartData = {
+                        labels: res.data.danh_muc_thu_chi,
+                        datasets: [
+                            {
+                                backgroundColor: "#FFDE59",
+                                data: res.data.list_tien_thu_chi,
+                            },
+                        ],
+                    };
+                    this.isloading = true;
+                    this.chenh_lech = res.data.chenh_lech;
+                })
+                .catch((err) => console.log(err));
+        },
     },
 
     mounted() {
         this.getTietkiem();
+        this.getdatachart();
     }
 }
 </script>
-<style >
-    
-</style>
+<style></style>
