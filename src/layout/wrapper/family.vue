@@ -85,12 +85,12 @@
                                     </li>
                                     <div class="user-box dropdown">
                                         <div class="d-flex align-items-center">
-                                            <img src="../../assets/images/avatars/avatar-1.png" class="rounded-circle"
+                                            <img v-bind:src="user.avatar" class="rounded-circle"
                                                 width="50" alt="">
                                             <div class="ms-2">
                                                 <li class="nav-item ">
                                                     <a class="nav-link" href="/profile">
-                                                        <h6 class="mb-0">Nguyen Van A</h6>
+                                                        <h6 class="mb-0">{{ user.ten_tai_khoan }}</h6>
                                                     </a>
                                                 </li>
                                                 <small class="ms-2">Đăng xuất</small>
@@ -126,6 +126,7 @@
 
 </template>
 <script>
+import axios from "axios";
 import "../../assets/js/bootstrap.bundle.min.js";
 import "../../assets/js/jquery.min.js";
 import "../../assets/plugins/metismenu/js/metisMenu.min.js";
@@ -138,7 +139,33 @@ import "../../assets/js/index.js";
 import "../../assets/js/app.js";
 import "../../assets/js/pace.min.js";
 export default {
+    data() {
+        return {
+            user : {},
+        };
+    },
+    mounted() {
+        this.layThongTin();
+    },
     methods: {
+        layThongTin() {
+            var token = localStorage.getItem("tai_khoan_login");
+            axios
+                .get("http://127.0.0.1:8000/api/khach-hang/get-data", {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        console.log(res.data.data);
+
+                        this.user = res.data.data;
+                    } else {
+                        toaster.error(res.data.message);
+                    }
+                });
+        },
         goToThuChicanhan() {
             this.$router.push('/canhan'); // thay bằng path bạn cấu hình trong router
         },
