@@ -9,7 +9,7 @@
                         <div>
                             <b>Tên nhóm</b>
                             <p> 5 Thành viên</p>
-                            <a href="#">Xem chi tiết</a>
+                            <a href="#" v-on:click="hienThichitiet()">Xem chi tiết</a>
                         </div>
                         <div class="text-end">
                             <p>Chủ Nhóm: </p>
@@ -65,15 +65,41 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    <tr v-for="item in chi_tiet" :key="item.id">
+                        <td>{{ item.ten_tai_khoan }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.thu_nhap }}</td>
+                        <td>{{ item.vai_tro }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </template>
-<script>
-export default {
 
+<script>
+import axios from 'axios';
+export default {
+data() {
+        return {
+            chi_tiet: [],
+           
+            
+        }
+
+
+    },
+    mounted() {
+        this.hienThichitiet();
+    },
+    methods: {
+        hienThichitiet() {
+            axios.get('http://127.0.0.1:8000/api/qlgiadinh')
+                .then((res) => {
+                    this.chi_tiet = res.data.qlgiadinh ;
+                })
+        },
+    }
 }
 </script>
 <style></style>
