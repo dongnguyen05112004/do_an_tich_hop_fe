@@ -239,8 +239,8 @@ export default {
             isloading: false,
             l_tietkiem: [],
             them_tietkiem: { ten_tiet_kiem: '', ngay_bat_dau: '', ngay_ket_thuc: '', lai_suat: '', ghi_chu: '' },
-            xoa_tietkiem: { ma_tiet_kiem: '', ten_tiet_kiem: '', ngay_bat_dau: '', ngay_ket_thuc: '', lai_suat: '', ghi_chu: '' },
-            sua_tietkiem: { ma_tiet_kiem: '', ten_tiet_kiem: '', ngay_bat_dau: '', ngay_ket_thuc: '', lai_suat: '', ghi_chu: '' },
+            xoa_tietkiem: {  ten_tiet_kiem: '', ngay_bat_dau: '', ngay_ket_thuc: '', lai_suat: '', ghi_chu: '' },
+            sua_tietkiem: { ten_tiet_kiem: '', ngay_bat_dau: '', ngay_ket_thuc: '', lai_suat: '', ghi_chu: '' },
             chartOptions: {
                 responsive: true,
                 plugins: {
@@ -311,6 +311,6 @@ export default {
     },
     mounted() {
         this.getTietkiem();
-    }
+    },
 }
 </script>
