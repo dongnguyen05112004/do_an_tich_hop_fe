@@ -17,9 +17,9 @@
                                 <div>
                                     <div class="row">
                                         <div class="col-lg-5"><strong>{{ v.ten_chi_tieu_gd }}:</strong> {{ v.so_tien_gd
-                                        }} </div>
+                                            }} </div>
                                         <div class="col-lg-5"><span class="text-small"> <b>Ngày:</b> {{ v.ngay_gd
-                                        }}</span> </div>
+                                                }}</span> </div>
                                         <div class="col-lg-2 text-end">
                                             <button class="btn btn-light btn-sm" type="button"
                                                 data-bs-toggle="dropdown">
@@ -46,10 +46,7 @@
             <div class="col-md-6" style="height: 100%;">
                 <h5><strong>Thêm Chi tiêu</strong></h5>
                 <div class="card-custom mt-2 background-color">
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Mã chi tiêu</label>
-                        <input v-model="themChi.ma_chi_gd" type="text" class="form-control" />
-                    </div>
+
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Tên chi tiêu</label>
                         <input v-model="themChi.ten_chi_tieu_gd" type="text" class="form-control" />
@@ -577,10 +574,10 @@
                     <b><span v-if="chiThapNhat">
                             {{ chiThapNhat.ten_chi_tieu_gd }}
                             ({{ Number(chiThapNhat.so_tien_gd).toLocaleString('vi-VN') }}đ)
-                        </span></b> 
+                        </span></b>
                     <br>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 
@@ -630,10 +627,6 @@
                     style="background-color: #DDE8F5; border-radius: 16px; padding: 15px;">
 
                     <div class="mb-2">
-                        <label for="soTien" class="form-label">Mã chi tiêu</label>
-                        <input v-model="suaChi.ma_chi_gd" type="text" class="form-control" />
-                    </div>
-                    <div class="mb-2">
                         <label for="soTien" class="form-label">Tên chi tiêu</label>
                         <input v-model="suaChi.ten_chi_tieu_gd" type="text" class="form-control" />
                     </div>
@@ -679,15 +672,50 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from "axios";
+import { Bar } from "vue-chartjs";
+import {
+    Chart as ChartJS,
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+} from "chart.js";
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
 export default {
     data() {
         return {
             l_chitieu: [],
-            themChi: { ma_chi_gd: '', ten_chi_tieu_gd: '', danh_muc_gd: '', so_tien_gd: '', ngay_gd: '', mo_ta_gd: '' },
-            xoaChi: { ma_chi_gd: '', ten_chi_tieu_gd: '', danh_muc_gd: '', so_tien_gd: '', ngay_gd: '', mo_ta_gd: '' },
-            suaChi: { ma_chi_gd: '', ten_chi_tieu_gd: '', danh_muc_gd: '', so_tien_gd: '', ngay_gd: '', mo_ta_gd: '' },
-
+            themChi: {
+                id_tai_khoan: "",
+                ma_chi_gd: "",
+                ten_chi_tieu_gd: "",
+                danh_muc_gd: "",
+                so_tien_gd: "",
+                ngay_gd: "",
+                mo_ta_gd: "",
+            },
+            xoaChi: {
+                id_tai_khoan: "",
+                ma_chi_gd: "",
+                ten_chi_tieu_gd: "",
+                danh_muc_gd: "",
+                so_tien_gd: "",
+                ngay_gd: "",
+                mo_ta_gd: "",
+            },
+            suaChi: {
+                id_tai_khoan: "",
+                ma_chi_gd: "",
+                ten_chi_tieu_gd: "",
+                danh_muc_gd: "",
+                so_tien_gd: "",
+                ngay_gd: "",
+                mo_ta_gd: "",
+            },
         };
     },
     mounted() {
@@ -696,20 +724,19 @@ export default {
     computed: {
         tongChi() {
             if (!this.l_chitieu || this.l_chitieu.length === 0) return 0;
-            return this.l_chitieu.reduce((sum, item) => {
-                return sum + Number(item.so_tien_gd || 0);
-            }, 0);
+            return this.l_chitieu.reduce(
+                (sum, item) => sum + Number(item.so_tien_gd || 0),
+                0
+            );
         },
-
         chiCaoNhat() {
-            if (!this.l_chitieu || this.l_chitieu.length === 0) return null;
+            if (!this.l_chitieu.length) return null;
             return this.l_chitieu.reduce((max, item) =>
                 Number(item.so_tien_gd) > Number(max.so_tien_gd) ? item : max
             );
         },
-
         chiThapNhat() {
-            if (!this.l_chitieu || this.l_chitieu.length === 0) return null;
+            if (!this.l_chitieu.length) return null;
             return this.l_chitieu.reduce((min, item) =>
                 Number(item.so_tien_gd) < Number(min.so_tien_gd) ? item : min
             );
@@ -717,7 +744,11 @@ export default {
     },
     methods: {
         getChi() {
-            axios.get('http://127.0.0.1:8000/api/giadinh/chitieu/data')
+            axios.get('http://127.0.0.1:8000/api/giadinh/chitieu/data', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                }
+            })
                 .then(response => {
                     this.l_chitieu = response.data.data;
                 })
@@ -727,7 +758,12 @@ export default {
         },
         getthemChi() {
             axios
-                .post('http://127.0.0.1:8000/api/giadinh/chitieu/them', this.themChi)
+                .post('http://127.0.0.1:8000/api/giadinh/chitieu/them', this.themChi, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+                })
+
                 .then(response => {
                     if (response.data.status == true) {
                         this.getChi();
@@ -748,9 +784,14 @@ export default {
                     });
                 });
         },
+
         getxoaChi() {
             axios
-                .post('http://127.0.0.1:8000/api/giadinh/chitieu/xoa', this.xoaChi)
+                .post('http://127.0.0.1:8000/api/giadinh/chitieu/xoa', this.xoaChi, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+                })
                 .then(response => {
                     if (response.data.status == true) {
                         this.getChi();
@@ -774,7 +815,11 @@ export default {
 
         getsuaChi() {
             axios
-                .post('http://127.0.0.1:8000/api/giadinh/chitieu/sua', this.suaChi)
+                .post('http://127.0.0.1:8000/api/giadinh/chitieu/sua', this.suaChi, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+                })
                 .then(response => {
                     // console.log(response.data.status);
                     // console.log(response.data.message);
@@ -797,9 +842,8 @@ export default {
                     });
                 });
         },
-    }
-
-}
+    },
+};
 </script>
 <style>
 body {
