@@ -10,14 +10,17 @@
                             :class="{ 'text-success': chenhLech > 0, 'text-danger': chenhLech < 0 }"> {{
                                 chenhLech.toLocaleString('vi-VN') }}đ </span></p>
                 </div>
-                <div class="card card-responsive" style="padding: 32px;  background-color: #DDE8F5; height: 430px; overflow-y: auto;">
+                <div class="card card-responsive"
+                    style="padding: 32px;  background-color: #DDE8F5; height: 430px; overflow-y: auto;">
                     <template v-for="(v, index) in l_thu" :key="index">
                         <div class="card">
                             <div class="card-body">
                                 <div>
                                     <div class="row">
-                                        <div class="col-lg-5"><strong>{{ v.ten_thu_nhap_gd }}:</strong> {{ v.so_tien_gd }}</div>
-                                        <div class="col-lg-5"><span class="text-small"> <b>Ngày:</b> {{ v.ngay_gd }}</span></div>
+                                        <div class="col-lg-5"><strong>{{ v.ten_thu_nhap_gd }}:</strong> {{ v.so_tien_gd
+                                            }}</div>
+                                        <div class="col-lg-5"><span class="text-small"> <b>Ngày:</b> {{ v.ngay_gd
+                                                }}</span></div>
                                         <div class="col-lg-2 text-end">
                                             <button class="btn btn-light btn-sm" type="button"
                                                 data-bs-toggle="dropdown">
@@ -31,7 +34,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
                     </template>
@@ -44,13 +47,7 @@
             <div class="col-md-6" style="height: 100%;">
                 <h5><strong>Thêm thu nhập</strong></h5>
 
-                <div class="card-custom mt-2 background-color">
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Mã thu nhập</label>
-                        <input v-model="them_thu.ma_thu_gd" type="text" class="form-control" id="soTien"
-                            placeholder="Value" />
-                    </div>
-
+                <div class="card-custom mt-2 background-color"> 
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Tên thu nhập</label>
                         <input v-model="them_thu.ten_thu_nhap_gd" type="text" class="form-control" id="soTien"
@@ -86,11 +83,12 @@
                         <div class="row">
                             <div class="col-lg-4"></div>
                             <div class="col-lg-4">
-                                <button style="background-color: #BBD2F4; border-radius: 16px; width: 100%;" v-on:click="themThu()"
-                                type="button" data-bs-dismiss="modal" class="btn"><b>Thêm</b></button>
+                                <button style="background-color: #BBD2F4; border-radius: 16px; width: 100%;"
+                                    v-on:click="themThu()" type="button" data-bs-dismiss="modal"
+                                    class="btn"><b>Thêm</b></button>
                             </div>
                             <div class="col-lg-4"></div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -622,17 +620,11 @@
             <div class="modal-content" style="background-color: #DDE8F5; border-radius: 16px;">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel"> Sửa khoản thu nhập {{ sua_thu.ten_thu_nhap_gd
-                    }}
+                        }}
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Mã thu nhập</label>
-                        <input v-model="sua_thu.ma_thu_gd" type="text" class="form-control" id="soTien"
-                            placeholder="Value" />
-                    </div>
-
+                <div class="modal-body"> 
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Tên thu nhập</label>
                         <input v-model="sua_thu.ten_thu_nhap_gd" type="text" class="form-control" id="soTien"
@@ -677,6 +669,7 @@
 </template>
 <script>
 import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -686,90 +679,88 @@ export default {
             sua_thu: { ma_thu_gd: '', ten_thu_nhap_gd: '', danh_muc_gd: '', so_tien_gd: '', ngay_gd: '', mo_ta_gd: '' }
         }
     },
+    mounted() {
+        this.getThu();
+    },
+
     methods: {
+        getToken() {
+            return localStorage.getItem('token_tai_khoan');
+        },
         getThu() {
-            axios.get('http://127.0.0.1:8000/api/giadinh/thunhap/data')
+            axios.get('http://127.0.0.1:8000/api/giadinh/thunhap/data', {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token_tai_khoan"),
+                },
+                })
                 .then(response => {
                     this.l_thu = response.data.data;
                 })
                 .catch(err => {
                     console.log(err);
-                })
+                    this.$toast.error("Không lấy được dữ liệu");
+                });
         },
         themThu() {
-            axios
-                .post('http://127.0.0.1:8000/api/giadinh/thunhap/them', this.them_thu)
+            axios.post('http://127.0.0.1:8000/api/giadinh/thunhap/them', this.them_thu, {
+                headers: {
+                    Authorization: `Bearer ${this.getToken()}`
+                }
+            })
                 .then(response => {
-                    if (response.data.status == true) {
+                    if (response.data.status) {
                         this.getThu();
                         this.$toast.success(response.data.message);
+                        this.them_thu = { ma_thu_gd: '', ten_thu_nhap_gd: '', danh_muc_gd: '', so_tien_gd: '', ngay_gd: '', mo_ta_gd: '' };
                     } else {
-                        this.$toast.error('Them moi that bai');
+                        this.$toast.error(response.data.message || 'Thêm mới thất bại');
                     }
                 })
                 .catch(error => {
-                    var obj = error.response.data.errors;
-                    var result = Object.keys(obj).map((key) => [key, obj[key]]);
-                    console.log(result);
-                    result.forEach((v_1, key_1) => {
-                        var xxx = v_1[1];
-                        xxx.forEach((v, key) => {
-                            this.$toast.error(v);
-                        });
-                    });
+                    console.log(error.response);
+                    this.$toast.error("Có lỗi khi thêm thu nhập");
                 });
         },
-
         xoaThu() {
-            axios
-                .post('http://127.0.0.1:8000/api/giadinh/thunhap/xoa', this.xoa_thu)
+            axios.post('http://127.0.0.1:8000/api/giadinh/thunhap/xoa', this.xoa_thu, {
+                headers: {
+                    Authorization: `Bearer ${this.getToken()}`
+                }
+            })
                 .then(response => {
-                    if (response.data.status == true) {
+                    if (response.data.status) {
                         this.getThu();
                         this.$toast.success(response.data.message);
                     } else {
-                        this.$toast.error('Xoa that bai');
+                        this.$toast.error(response.data.message || 'Xóa thất bại');
                     }
                 })
                 .catch(error => {
-                    var obj = error.response.data.errors;
-                    var result = Object.keys(obj).map((key) => [key, obj[key]]);
-                    console.log(result);
-                    result.forEach((v_1, key_1) => {
-                        var xxx = v_1[1];
-                        xxx.forEach((v, key) => {
-                            this.$toast.error(v);
-                        });
-                    });
+                    console.log(error.response);
+                    this.$toast.error("Có lỗi khi xóa thu nhập");
                 });
         },
-
         suaThu() {
-            axios
-                .post('http://127.0.0.1:8000/api/giadinh/thunhap/sua', this.sua_thu)
+            axios.post('http://127.0.0.1:8000/api/giadinh/thunhap/sua', this.sua_thu, {
+                headers: {
+                    Authorization: `Bearer ${this.getToken()}`
+                }
+            })
                 .then(response => {
-                    // console.log(response.data.status);
-                    // console.log(response.data.message);
-                    if (response.data.status == true) {
+                    if (response.data.status) {
                         this.getThu();
                         this.$toast.success(response.data.message);
                     } else {
-                        this.$toast.error('Sua moi that bai');
+                        this.$toast.error(response.data.message || 'Sửa thất bại');
                     }
                 })
                 .catch(error => {
-                    var obj = error.response.data.errors;
-                    var result = Object.keys(obj).map((key) => [key, obj[key]]);
-                    console.log(result);
-                    result.forEach((v_1, key_1) => {
-                        var xxx = v_1[1];
-                        xxx.forEach((v, key) => {
-                            this.$toast.error(v);
-                        });
-                    });
+                    console.log(error.response);
+                    this.$toast.error("Có lỗi khi sửa thu nhập");
                 });
         },
     },
+
     computed: {
         tongThu() {
             if (!this.l_thu || this.l_thu.length === 0) return 0;
@@ -795,11 +786,9 @@ export default {
             if (!this.thuThangTruoc) return 0;
             return this.tongThu - this.thuThangTruoc;
         }
-    },
-
-    mounted() {
-        this.getThu();
     }
+
+
 }
 </script>
 <style>

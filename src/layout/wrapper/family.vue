@@ -37,7 +37,7 @@
                                             </div>
                                         </a>
                                     </li>
-                                    
+
                                     <li class="nav-item mt-3">
                                         <a class="nav-link" href="/thongkegiadinh">
                                             <div class="menu-title">
@@ -67,56 +67,73 @@
                                         </a>
                                     </li>
                                     <li class="nav-item dropdown mt-3">
-                                        <a style="margin-top: -8.95px;" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a style="margin-top: -8.95px;" class="nav-link dropdown-toggle" href="#"
+                                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <h6 style="display: inline-block;">Tùy chọn</h6>
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li><a class="dropdown-item" href="#">Quản lý Danh mục</a></li>
                                             <li><a class="dropdown-item" href="#">Quản lý Ngân Sách</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" href="/thanhviengiadinh">Thành viên gia đình</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="/thanhviengiadinh">Thành viên gia
+                                                    đình</a></li>
                                         </ul>
                                     </li>
                                     <div class="user-box dropdown">
                                         <div class="d-flex align-items-center">
-                                            <img v-bind:src="user.avatar" class="rounded-circle"
-                                                width="50" alt="">
+                                            <img v-bind:src="user.avatar" class="rounded-circle" width="50" alt="">
                                             <div class="ms-2">
                                                 <li class="nav-item ">
                                                     <a class="nav-link" href="/profile">
                                                         <h6 class="mb-0">{{ user.ten_tai_khoan }}</h6>
                                                     </a>
+
                                                 </li>
-                                                <small class="ms-2">Đăng xuất</small>
+                                                <li><a class="dropdown-item" href="/thanhviengiadinh">Thành viên gia
+                                                        đình</a></li>
                                             </div>
                                         </div>
                                     </div>
                                 </ul>
+                                <div class="user-box dropdown d-flex align-items-center me-3 ">
+                                    <div class="d-flex align-items-center"></div>
+                                    <img v-bind:src="user.avatar" style="height: 50px;" class="rounded-circle ms-3"
+                                        width="50" alt="">
+                                    <div class="ms-2">
+                                        <a class="nav-link" href="/profile">
+                                            <h6 class="mb-0">{{ user.ten_tai_khoan }}</h6>
+                                        </a>
+                                        <small class="ms-2">Đăng xuất</small>
+                                    </div>
+                                </div>
                             </nav>
                         </div>
                     </nav>
                 </div>
             </header>
-        </div>
-        <!--end header wrapper-->
-        <!--start page wrapper -->
-        <div class="page-wrapper" style="background-color: #fff; min-height: 100vh; margin-top: 60px;">
-
-            <div class="page-content">
-                <router-view></router-view>
-            </div>
-        </div>
-        <!--end page wrapper -->
-        <!--start overlay-->
-        <div class="overlay toggle-icon"></div>
-        <!--end overlay-->
-        <!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i
-                class='bx bxs-up-arrow-alt'></i></a>
-        <!--End Back To Top Button-->
-        <footer class="page-footer">
-            <p class="mb-0">Đông - Quang - Trọng - Đức - Trang</p>
-        </footer>
+        </div> 
     </div>
+
+    <!--end header wrapper-->
+    <!--start page wrapper -->
+    <div class="page-wrapper" style="background-color: #fff; min-height: 100vh; margin-top: 60px;">
+
+        <div class="page-content">
+            <router-view></router-view>
+        </div>
+    </div>
+    <!--end page wrapper -->
+    <!--start overlay-->
+    <div class="overlay toggle-icon"></div>
+    <!--end overlay-->
+    <!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+    <!--End Back To Top Button-->
+    <footer class="page-footer">
+        <p class="mb-0">Đông - Quang - Trọng - Đức - Trang</p>
+    </footer>
+
 
 </template>
 <script>
@@ -132,10 +149,11 @@ import "../../assets/plugins/chartjs/js/Chart.extension.js";
 import "../../assets/js/index.js";
 import "../../assets/js/app.js";
 import "../../assets/js/pace.min.js";
+import axios from "axios";
 export default {
     data() {
-        return {
-            user : {},
+        return { 
+            user: {}, 
         };
     },
     mounted() {
@@ -143,7 +161,8 @@ export default {
     },
     methods: {
         layThongTin() {
-            var token = localStorage.getItem("tai_khoan_login");
+            var token = localStorage.getItem("token_tai_khoan"); 
+            console.log("Token trong localStorage:", token); // kiểm tra có token không 
             axios
                 .get("http://127.0.0.1:8000/api/khach-hang/get-data", {
                     headers: {

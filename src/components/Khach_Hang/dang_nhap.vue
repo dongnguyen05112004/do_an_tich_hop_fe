@@ -55,17 +55,21 @@ export default {
                 .then((res) => {
                     if (res.data.status) {
                         this.$toast.success(res.data.message);
-                        localStorage.setItem('tai_khoan_login', res.data.token);
+                        localStorage.setItem('token_tai_khoan', res.data.token);
                         this.$router.push('/home');
                     } else {
                         this.$toast.error(res.data.message);
                     }
                 })
-                .catch((res) => {
-                    const list = Object.values(res.response.data.errors);
-                    list.forEach((v, i) => {
-                        this.$toast.error(v[0]);
-                    });
+                .catch((err) => {
+                    if (err.response && err.response.data.errors) {
+                        const list = Object.values(err.response.data.errors);
+                        list.forEach((v) => {
+                            this.$toast.error(v[0]);
+                        });
+                    } else {
+                        this.$toast.error("Có lỗi xảy ra khi đăng nhập");
+                    }
                 })
         }
     }

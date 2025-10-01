@@ -43,11 +43,7 @@
                 <h5><strong>Thêm thu nhập</strong></h5>
 
                 <div class="card-custom mt-2 background-color">
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Mã thu nhập</label>
-                        <input v-model="them_thu.ma_thu" type="text" class="form-control" id="soTien"
-                            placeholder="Value" />
-                    </div>
+                    
 
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Tên thu nhập</label>
@@ -578,17 +574,26 @@
 
     <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel"> Xóa khoản thu {{ xoa_thu.ten_thu_nhap }}</h1>
+            <div class="modal-content" style="background-color: #DDE8F5; border-radius: 16px;">
+                 <!-- Header -->
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="delModalLabel">Xóa khoản thu {{ xoa_thu.ten_thu_nhap }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc muốn xóa khoản thu này không?</p>
+
+                <!-- Body -->
+                <div class="modal-body ms-4 me-4"
+                    style="background-color: #BBD2F4; border-radius: 16px; padding: 15px;">
+                    <p class="mb-0 fw-semibold">
+                        Bạn có muốn xóa khoản thu này <br>
+                        <span class="text-danger">Lưu ý: Điều này không thể hoàn tác !!!</span>
+                    </p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button v-on:click="xoaThu()" type="button" data-bs-dismiss="modal" class="btn btn-danger">Xác nhận</button>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn" 
+                        style="background-color: #BBD2F4; border-radius: 16px;" data-bs-dismiss="modal">Hủy</button>
+                    <button v-on:click="xoaThu()" type="button" 
+                        style="background-color: #BBD2F4; border-radius: 16px;" data-bs-dismiss="modal" class="btn ">Xác nhận</button>
                 </div>
             </div>
         </div>
@@ -596,17 +601,13 @@
 
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: #DDE8F5; border-radius: 16px;">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel"> Sửa khoản thu nhập {{ sua_thu.ten_thu_nhap }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Mã thu nhập</label>
-                        <input v-model="sua_thu.ma_thu" type="text" class="form-control" id="soTien"
-                            placeholder="Value" />
-                    </div>
+                    
 
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Tên thu nhập</label>
@@ -640,9 +641,11 @@
                             placeholder="Value"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button v-on:click="suaThu()" type="button" data-bs-dismiss="modal" class="btn btn-danger">Xác nhận</button>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn  " 
+                        style="background-color: #BBD2F4; border-radius: 16px;" data-bs-dismiss="modal">Hủy</button>
+                    <button v-on:click="suaThu()"
+                        style="background-color: #BBD2F4; border-radius: 16px;" type="button" data-bs-dismiss="modal" class="btn">Xác nhận</button>
                 </div>
             </div>
         </div>
@@ -688,7 +691,11 @@ export default {
     },
     methods: {
         getThu() {
-            axios.get('http://127.0.0.1:8000/api/canhan/thunhap/data')
+            axios.get('http://127.0.0.1:8000/api/canhan/thunhap/data',{
+                headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+            })
                 .then(response => {
                     this.l_thu = response.data.data;
                 })
@@ -698,7 +705,11 @@ export default {
         },
         themThu() {
             axios
-                .post('http://127.0.0.1:8000/api/canhan/thunhap/them', this.them_thu)
+                .post('http://127.0.0.1:8000/api/canhan/thunhap/them', this.them_thu,{
+                headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+            })
                 .then(response => {
                     if (response.data.status == true) {
                         this.getThu();
@@ -722,7 +733,11 @@ export default {
 
         xoaThu() {
             axios
-                .post('http://127.0.0.1:8000/api/canhan/thunhap/xoa', this.xoa_thu)
+                .post('http://127.0.0.1:8000/api/canhan/thunhap/xoa', this.xoa_thu,{
+                headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+            })
                 .then(response => {
                     if (response.data.status == true) {
                         this.getThu();
@@ -746,7 +761,11 @@ export default {
 
         suaThu() {
             axios
-                .post('http://127.0.0.1:8000/api/canhan/thunhap/sua', this.sua_thu)
+                .post('http://127.0.0.1:8000/api/canhan/thunhap/sua', this.sua_thu,{
+                headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+            })
                 .then(response => {
                     // console.log(response.data.status);
                     // console.log(response.data.message);

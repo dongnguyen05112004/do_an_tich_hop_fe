@@ -16,8 +16,10 @@
                             <div class="card-body">
                                 <div>
                                     <div class="row">
-                                        <div class="col-lg-5"><strong>{{ v.ten_chi_tieu }}:</strong> {{ v.so_tien }} </div>
-                                        <div class="col-lg-5"><span class="text-small"> <b>Ngày:</b> {{ v.ngay }}</span> </div>
+                                        <div class="col-lg-5"><strong>{{ v.ten_chi_tieu }}:</strong> {{ v.so_tien }}
+                                        </div>
+                                        <div class="col-lg-5"><span class="text-small"> <b>Ngày:</b> {{ v.ngay }}</span>
+                                        </div>
                                         <div class="col-lg-2 text-end">
                                             <button class="btn btn-light btn-sm" type="button"
                                                 data-bs-toggle="dropdown">
@@ -44,10 +46,7 @@
             <div class="col-md-6" style="height: 100%;">
                 <h5><strong>Thêm Chi tiêu</strong></h5>
                 <div class="card-custom mt-2 background-color">
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Mã chi tiêu</label>
-                        <input v-model="themChi.ma_chi" type="text" class="form-control" />
-                    </div>
+
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Tên chi tiêu</label>
                         <input v-model="themChi.ten_chi_tieu" type="text" class="form-control" />
@@ -575,10 +574,10 @@
                     <b><span v-if="chiThapNhat">
                             {{ chiThapNhat.ten_chi_tieu }}
                             ({{ Number(chiThapNhat.so_tien).toLocaleString('vi-VN') }}đ)
-                        </span></b> 
+                        </span></b>
                     <br>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 
@@ -588,7 +587,7 @@
 
                 <!-- Header -->
                 <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold" id="delModalLabel">Xóa khoản chi tiêu</h5>
+                    <h5 class="modal-title fw-bold" id="delModalLabel">Xóa khoản chi {{ xoaChi.ten_chi_tieu }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -616,21 +615,17 @@
 
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: #DDE8F5; border-radius: 16px;">
                 <!-- Header -->
                 <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold" id="delModalLabel">Sửa khoản chi tiêu</h5>
+                    <h5 class="modal-title fw-bold" id="delModalLabel">Sửa khoản chi {{ suaChi.ten_chi_tieu }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <!-- Body -->
                 <div class="modal-body ms-4 me-4"
                     style="background-color: #DDE8F5; border-radius: 16px; padding: 15px;">
-
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Mã chi tiêu</label>
-                        <input v-model="suaChi.ma_chi" type="text" class="form-control" />
-                    </div>
+ 
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Tên chi tiêu</label>
                         <input v-model="suaChi.ten_chi_tieu" type="text" class="form-control" />
@@ -682,9 +677,9 @@ export default {
     data() {
         return {
             l_chitieu: [],
-            themChi: { ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
-            xoaChi: { ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
-            suaChi: { ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
+            themChi: { id_tai_khoan: "", ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
+            xoaChi: {id_tai_khoan: "",  ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
+            suaChi: {id_tai_khoan: "",  ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
 
         };
     },
@@ -715,7 +710,11 @@ export default {
     },
     methods: {
         getChi() {
-            axios.get('http://127.0.0.1:8000/api/canhan/chitieu/data')
+            axios.get('http://127.0.0.1:8000/api/canhan/chitieu/data', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                }
+            })
                 .then(response => {
                     this.l_chitieu = response.data.data;
                 })
@@ -725,7 +724,11 @@ export default {
         },
         getthemChi() {
             axios
-                .post('http://127.0.0.1:8000/api/canhan/chitieu/them', this.themChi)
+                .post('http://127.0.0.1:8000/api/canhan/chitieu/them', this.themChi, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+                })
                 .then(response => {
                     if (response.data.status == true) {
                         this.getChi();
@@ -748,7 +751,11 @@ export default {
         },
         getxoaChi() {
             axios
-                .post('http://127.0.0.1:8000/api/canhan/chitieu/xoa', this.xoaChi)
+                .post('http://127.0.0.1:8000/api/canhan/chitieu/xoa', this.xoaChi, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+                })
                 .then(response => {
                     if (response.data.status == true) {
                         this.getChi();
@@ -772,7 +779,11 @@ export default {
 
         getsuaChi() {
             axios
-                .post('http://127.0.0.1:8000/api/canhan/chitieu/sua', this.suaChi)
+                .post('http://127.0.0.1:8000/api/canhan/chitieu/sua', this.suaChi, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
+                    }
+                })
                 .then(response => {
                     // console.log(response.data.status);
                     // console.log(response.data.message);

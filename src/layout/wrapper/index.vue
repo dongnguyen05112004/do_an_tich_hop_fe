@@ -5,12 +5,10 @@
             <!--start header -->
             <header>
                 <div class="topbar d-flex align-items-center" style="background-color: #DDE8F5;">
-                    <nav class="navbar navbar-expand">
-
+                    <nav class="navbar navbar-expand"> 
                         <div class="top-menu ms-auto">
                             <nav class="navbar navbar-expand-xl w-100">
-                                <div class="d-flex align-items-center w-100">
-
+                                <div class="d-flex align-items-center w-100"> 
                                     <!-- Nút logo/trang chính sang trái -->
                                     <div class="brand ms-2">
                                         <button class="btn" @click="goToThuChigiadinh"
@@ -18,8 +16,7 @@
                                             Quản lý thu chi Gia đình
                                         </button>
                                     </div>
-                                    <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
-
+                                    <ul class="navbar-nav justify-content-start flex-grow-1 gap-1"> 
                                         <li class="nav-item mt-3">
                                             <a class="nav-link" href="/home">
                                                 <div class="menu-title">
@@ -84,10 +81,10 @@
                                         </a>
                                     </li>
                                     </ul>
-                                    <div class="user-box dropdown d-flex align-items-center me-3">
+                                    <div class="user-box dropdown d-flex align-items-center me-3 ">
                                         <div class="d-flex align-items-center"></div>
-                                        <img v-bind:src="user.avatar"  class="rounded-circle"
-                                            width="45" alt="">
+                                        <img v-bind:src="user.avatar" style="height: 50px;" class="rounded-circle ms-3"
+                                            width="50" alt="">
                                         <div class="ms-2">
                                             <a class="nav-link" href="/profile">
                                                 <h6 class="mb-0">{{ user.ten_tai_khoan }}</h6>
@@ -147,6 +144,7 @@ export default {
     methods: {
         layThongTin() {
             var token = localStorage.getItem("tai_khoan_login");
+            console.log("Token trong localStorage:", token); // kiểm tra có token không
             axios
                 .get("http://127.0.0.1:8000/api/khach-hang/get-data", {
                     headers: {
