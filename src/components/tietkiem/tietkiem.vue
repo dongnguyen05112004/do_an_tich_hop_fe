@@ -77,7 +77,7 @@
                             placeholder="Nhập mã tài khoản">
                 </textarea>
                     </div>
-                    <div class="text-end"><button class="btn btn-primary" v-on:click="themTietkiem()">Thêm</button>
+                    <div class="text-end"><button style="padding: 10px; border-radius: 20px;  background-color: #C4DAF5;" class="btn" v-on:click="themTietkiem()">Thêm</button>
                     </div>
                 </div>
             </div>
