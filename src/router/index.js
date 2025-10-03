@@ -1,6 +1,20 @@
-import { createRouter, createWebHistory } from "vue-router"; // cài vue-router: npm install vue-router@next --save
+import { createRouter, createWebHistory } from "vue-router"; 
 
 const routes = [
+    {
+        path: "/",
+        redirect: "/dang-nhap"  
+    },
+    {
+        path: "/dang-nhap",
+        component: () => import("../components/Khach_Hang/dang_nhap.vue"),
+        meta: { layout: "blank" },
+    },
+    {
+        path: "/dang-ky",
+        component: () => import("../components/Khach_Hang/dang_ky.vue"),
+        meta: { layout: "blank" },
+    },
 
     {
         path: "/home",
@@ -16,7 +30,7 @@ const routes = [
         component: () => import("../layout/wrapper/index.vue"),
         meta: { layout: "index" },
         children: [
-            { path: "", redirect: "thunhap" }, // mặc định
+            { path: "", redirect: "thunhap" },
             {
                 path: "/thunhap",
                 component: () => import("../components/thunhap/thunhap.vue"),
@@ -42,24 +56,13 @@ const routes = [
                 component: () => import("../components/thongke/index.vue"),
             },
         ]
-    },
-    {
-        path: "/dang-nhap",
-        component: () => import("../components/Khach_Hang/dang_nhap.vue"),
-        meta: { layout: "blank" },
-    },
-    {
-        path: "/dang-ky",
-        component: () => import("../components/Khach_Hang/dang_ky.vue"),
-        meta: { layout: "blank" },
-    },
-
+    }, 
     {
         path: "/giadinh",
         component: () => import("../layout/wrapper/family.vue"),
         meta: { layout: "family" },
         children: [
-            { path: "", redirect: "thunhapgiadinh" }, // mặc định
+            { path: "", redirect: "thunhapgiadinh" },
             {
                 path: "/thunhapgiadinh",
                 component: () => import("../components/giadinh/thunhapgiadinh/thunhapgiadinh.vue"),

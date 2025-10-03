@@ -1,18 +1,21 @@
 <template>
     <div class="row">
         <h5 class="fw-bold">Thông tin chung</h5>
-        <div class="p-3 rounded bg-light d-flex justify-content-between align-items-center">
-            <span class="fw-semibold">Tổng nợ hiện tại: 450.000.000 vnđ</span>
-            <span class="fw-semibold">Đã trả: 100.000.000 vnđ</span>
-            <span class="text-primary fst-italic">Ngày trả nợ xong (dự kiến): 15/11/2025</span>
+        <div style="border-radius: 20px; background-color: #DDE8F5">
+            <div class="p-3 rounded d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">Tổng nợ hiện tại: 450.000.000 vnđ</span>
+                <span class="fw-semibold">Đã trả: 100.000.000 vnđ</span>
+                <span class="text-primary fst-italic">Ngày trả nợ xong (dự kiến): 15/11/2025</span>
+            </div>
         </div>
+
     </div>
     <div class="row">
         <div class="col-6 mt-3">
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <h6 class="fw-bold">Danh sách khoản nợ</h6>
-                <button class=" btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#them">Thêm nợ cá
-                    nhân</button>
+                <button class=" btn btn-sm mb-3" style="padding: 10px; border-radius: 20px;  background-color: #DDE8F5;"
+                    data-bs-toggle="modal" data-bs-target="#them"><b>Thêm nợ cá nhân</b></button>
             </div>
             <div class="card card-responsive"
                 style="padding: 32px; border-radius: 20px;  background-color: #DDE8F5; height: 600px; overflow-y: auto;">
@@ -86,7 +89,7 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <td><b>phải trả</b> </td>
+                                        <td><b> Phải trả</b> </td>
                                         <td>ngày trả</td>
                                     </tr>
                                 </thead>
@@ -95,7 +98,8 @@
                             </table>
                         </div>
                         <div class="card-footer text-center">
-                            <button type="button" class="btn btn-primary">Đã trả nợ</button>
+                            <button style="padding: 8px; border-radius: 20px;  background-color: #DDE8F5;" type="button"
+                                class="btn"><b>Đã trả nợ</b></button>
                         </div>
 
                     </div>
@@ -119,9 +123,10 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn  mx-2 " style="background: #BBD2F4;" >Xóa</button>
-                        <button type="button" class="btn  mx-2" style="background: #BBD2F4;" data-bs-dismiss="modal">Hủy</button>
-                    </div>
+                    <button type="button" class="btn  mx-2 " style="background: #BBD2F4;">Xóa</button>
+                    <button type="button" class="btn  mx-2" style="background: #BBD2F4;"
+                        data-bs-dismiss="modal">Hủy</button>
+                </div>
             </div>
         </div>
     </div>
@@ -185,68 +190,68 @@
                 </div>
             </div>
         </div>
-</div>
-        <div class="modal fade" id="them" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel"> Thêm khoản nợ </h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
+    </div>
+    <div class="modal fade" id="them" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"> Thêm khoản nợ </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
 
+                    <div class="mb-3">
+                        <label for="maNo" class="form-label">Tên nợ</label>
+                        <input v-model="sua_no.ma_no" type="text" class="form-control" id="maNo"
+                            placeholder="Nhập mã nợ">
+                    </div>
+                    <div class="mb-3">
+                        <label for="noId" class="form-label">Số tiền vay</label>
+                        <input v-model="sua_no.ten_no" type="text" class="form-control" id="noId"
+                            placeholder="Nhập tên nợ">
+                    </div>
+                    <div class="mb-3">
+                        <label for="noName" class="form-label">Hình thức vay</label>
+                        <select class="form-select" id="inputGroupSelect0"
+                            aria-label="Example select with button addon">
+                            <option selected></option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">Lãi suất</label>
+                        <select class="form-select" id="inputGroupSelect4"
+                            aria-label="Example select with button addon">
+                            <option selected></option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endDate" class="form-label">Kỳ hạn</label>
+                        <select class="form-select" id="inputGroupSelect04"
+                            aria-label="Example select with button addon">
+                            <option selected></option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
                         <div class="mb-3">
-                            <label for="maNo" class="form-label">Tên nợ</label>
-                            <input v-model="sua_no.ma_no" type="text" class="form-control" id="maNo"
-                                placeholder="Nhập mã nợ">
+                            <label for="interestRate" class="form-label">Ghi chú</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label for="noId" class="form-label">Số tiền vay</label>
-                            <input v-model="sua_no.ten_no" type="text" class="form-control" id="noId"
-                                placeholder="Nhập tên nợ">
-                        </div>
-                        <div class="mb-3">
-                            <label for="noName" class="form-label">Hình thức vay</label>
-                            <select class="form-select" id="inputGroupSelect0"
-                                aria-label="Example select with button addon">
-                                <option selected></option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="startDate" class="form-label">Lãi suất</label>
-                            <select class="form-select" id="inputGroupSelect4"
-                                aria-label="Example select with button addon">
-                                <option selected></option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="endDate" class="form-label">Kỳ hạn</label>
-                            <select class="form-select" id="inputGroupSelect04"
-                                aria-label="Example select with button addon">
-                                <option selected></option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                            <div class="mb-3">
-                                <label for="interestRate" class="form-label">Ghi chú</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-center">
-                            <button type="button" data-bs-dismiss="modal" class="btn btn-primary ">Thêm</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-primary ">Thêm</button>
                     </div>
                 </div>
             </div>
         </div>
-    
+    </div>
+
     <div class="card" style="background: #DDE8F5;">
 
         <div class="row mt-2">
