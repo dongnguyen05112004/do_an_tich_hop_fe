@@ -143,7 +143,7 @@ export default {
     },
     methods: {
         layThongTin() {
-            var token = localStorage.getItem("tai_khoan_login");
+            var token = localStorage.getItem("token_tai_khoan");
             console.log("Token trong localStorage:", token); // kiểm tra có token không
             axios
                 .get("http://127.0.0.1:8000/api/khach-hang/get-data", {

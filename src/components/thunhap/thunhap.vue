@@ -6,78 +6,77 @@
                 <h5><strong>Thu nhập cá nhân</strong></h5>
                 <div class="card-custom" style="background-color: #DDE8F5;">
                     <p><strong>Tổng thu nhập:</strong> {{ tongThu.toLocaleString('vi-VN') }}đ</p>
-                    <p class="highlight">Thu nhập cao hơn tháng trước 1.850.000đ</p>
                 </div>
-                <div class="card card-responsive"  style="padding: 32px;  background-color: #DDE8F5; height: 430px; overflow-y: auto;">
+
+                <div class="card card-responsive"
+                    style="padding: 32px; background-color: #DDE8F5; height: 430px; overflow-y: auto;">
                     <template v-for="(v, index) in l_thu" :key="index">
-                        <div class="card">
+                        <div class="card mb-2">
                             <div class="card-body">
-                                <div>
-                                    <div class="row">
-                                        <div class="col-lg-5"><strong>{{ v.ten_thu_nhap }}:</strong> {{ v.so_tien }}</div>
-                                        <div class="col-lg-5"><span class="text-small"> <b>Ngày:</b> {{ v.ngay }}</span></div>
-                                        <div class="col-lg-2 text-end">
-                                            <button class="btn btn-light btn-sm" type="button"
-                                                data-bs-toggle="dropdown">
-                                                ...
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-custom">
-                                                <button v-on:click="Object.assign(sua_thu, v)" data-bs-toggle="modal"
-                                                    data-bs-target="#updateModal">Chỉnh sửa thu nhập</button>
-                                                <button v-on:click="Object.assign(xoa_thu, v)" data-bs-toggle="modal"
-                                                    data-bs-target="#delModal">Xóa thu nhập</button>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <strong>{{ v.ten_danh_muc }}:</strong> {{
+                                            Number(v.so_tien).toLocaleString('vi-VN') }}đ
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <span class="text-small"><b>Ngày:</b> {{ v.ngay_giao_dich }}</span>
+                                    </div>
+                                    <div class="col-lg-2 text-end">
+                                        <button class="btn btn-light btn-sm" type="button"
+                                            data-bs-toggle="dropdown">...</button>
+                                        <div class="dropdown-menu dropdown-menu-custom">
+                                            <button class="dropdown-item" @click="openSua(v)" data-bs-toggle="modal"
+                                                data-bs-target="#updateModal">Chỉnh sửa</button>
+                                            <button class="dropdown-item" @click="openXoa(v)" data-bs-toggle="modal"
+                                                data-bs-target="#delModal">Xóa</button>
                                         </div>
                                     </div>
+                                </div>
+                                <div v-if="v.ghi_chu" class="mt-2 text-muted" style="font-size: 0.9rem;">
+                                     {{ v.ghi_chu }}
                                 </div>
                             </div>
                         </div>
                     </template>
                 </div>
             </div>
-            <!-- Khoản thu nhập -->
-
 
             <!-- Bên phải -->
             <div class="col-md-6" style="height: 100%;">
                 <h5><strong>Thêm thu nhập</strong></h5>
 
                 <div class="card-custom mt-2 background-color">
-                    
-
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Tên thu nhập</label>
-                        <input v-model="them_thu.ten_thu_nhap" type="text" class="form-control" id="soTien"
-                            placeholder="Value" />
-                    </div>
-
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Số tiền</label>
                         <input v-model="them_thu.so_tien" type="number" class="form-control" id="soTien"
-                            placeholder="Value" />
+                            placeholder="Nhập số tiền" />
                     </div>
 
                     <div class="mb-2">
                         <label for="danhMuc" class="form-label">Danh Mục</label>
-                        <select v-model="them_thu.danh_muc" class="form-select" id="danhMuc">
-                            <option>Lương</option>
-                            <option>Chứng khoán</option>
-                            <option>Trợ cấp</option>
+                        <select v-model="them_thu.ma_danh_muc" class="form-select" id="danhMuc">
+                            <option disabled value="">-- Chọn danh mục --</option>
+                            <option v-for="dm in danh_mucs" :key="dm.id" :value="dm.id">{{ dm.ten_danh_muc }}</option>
                         </select>
                     </div>
 
                     <div class="mb-2">
                         <label for="ngay" class="form-label">Ngày thu nhập</label>
-                        <input v-model="them_thu.ngay" type="date" class="form-control" id="ngay" />
+                        <input v-model="them_thu.ngay_giao_dich" type="date" class="form-control" id="ngay" />
                     </div>
 
                     <div class="mb-2">
-                        <label for="moTa" class="form-label">Mô tả</label>
-                        <textarea v-model="them_thu.mo_ta" class="form-control" id="moTa" rows="2"
-                            placeholder="Value"></textarea>
+                        <label for="moTa" class="form-label">Ghi chú (tuỳ chọn)</label>
+                        <textarea v-model="them_thu.ghi_chu" class="form-control" id="moTa" rows="2"
+                            placeholder="Ghi chú thêm"></textarea>
                     </div>
 
-                    <button v-on:click="themThu()" type="submit" class="btn btn-primary w-100 mt-2">Thêm</button>
+                    <div class="text-center">
+                        <button style="background-color: #BBD2F4; border-radius: 16px;" v-on:click="getthemthu()" type="submit"
+                            class="btn mt-2">
+                            Thêm
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -560,156 +559,142 @@
             <div class="card">
                 <div class="card-body">
                     <strong> Ghi chú </strong><br>
-                    <b>- Thu nhập cao nhất : <span v-if="thuCaoNhat"> {{ thuCaoNhat.ten_thu_nhap }} ({{
-                        thuCaoNhat.so_tien.toLocaleString('vi-VN') }}đ)</span></b>
+                    <b>- Thu nhập cao nhất : </b>
+                    <b> <span v-if="thuCaoNhat">
+                            {{ thuCaoNhat.ma_danh_muc }}
+                            ({{ Number(thuCaoNhat.so_tien).toLocaleString('vi-VN') }}đ)
+                        </span> </b><br>
+
+                    <b>- Thu nhập thấp nhất : </b>
+                    <b><span v-if="thuThapNhat">
+                            {{ thuThapNhat.ma_danh_muc }}
+                            ({{ Number(thuThapNhat.so_tien).toLocaleString('vi-VN') }}đ)
+                        </span></b>
                     <br>
-                    <b>- Thu nhập ít nhất : <span v-if="thuThapNhat"> {{ thuThapNhat.ten_thu_nhap }} ({{
-                        thuThapNhat.so_tien.toLocaleString('vi-VN') }} đ)</span></b>
-                    <br>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="background-color: #DDE8F5; border-radius: 16px;">
-                 <!-- Header -->
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold" id="delModalLabel">Xóa khoản thu {{ xoa_thu.ten_thu_nhap }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <!-- Body -->
-                <div class="modal-body ms-4 me-4"
-                    style="background-color: #BBD2F4; border-radius: 16px; padding: 15px;">
-                    <p class="mb-0 fw-semibold">
-                        Bạn có muốn xóa khoản thu này <br>
-                        <span class="text-danger">Lưu ý: Điều này không thể hoàn tác !!!</span>
-                    </p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn" 
-                        style="background-color: #BBD2F4; border-radius: 16px;" data-bs-dismiss="modal">Hủy</button>
-                    <button v-on:click="xoaThu()" type="button" 
-                        style="background-color: #BBD2F4; border-radius: 16px;" data-bs-dismiss="modal" class="btn ">Xác nhận</button>
                 </div>
             </div>
         </div>
+        
     </div>
-
-    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="background-color: #DDE8F5; border-radius: 16px;">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel"> Sửa khoản thu nhập {{ sua_thu.ten_thu_nhap }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    
-
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Tên thu nhập</label>
-                        <input v-model="sua_thu.ten_thu_nhap" type="text" class="form-control" id="soTien"
-                            placeholder="Value" />
+    <!-- Modal Xóa -->
+        <div class="modal fade" id="delModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background-color: #DDE8F5; border-radius: 16px;">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title fw-bold">Xóa khoản thu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Số tiền</label>
-                        <input v-model="sua_thu.so_tien" type="number" class="form-control" id="soTien"
-                            placeholder="Value" />
+                    <div class="modal-body ms-3 me-3" style="background-color: #BBD2F4; border-radius: 16px;">
+                        <p class="fw-semibold mb-0"><b>Bạn có chắc muốn xóa khoản thu này?</b></p>
+                        <p class="text-danger mb-0"><b>Lưu ý: hành động này không thể hoàn tác!</b></p>
                     </div>
-
-                    <div class="mb-2">
-                        <label for="danhMuc" class="form-label">Danh Mục</label>
-                        <select v-model="sua_thu.danh_muc" class="form-select" id="danhMuc">
-                            <option>Lương</option>
-                            <option>Chứng khoán</option>
-                            <option>Trợ cấp</option>
-                        </select>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn" style="background-color: #BBD2F4; border-radius: 16px;"
+                            data-bs-dismiss="modal">Hủy</button>
+                        <button @click="xoaThu" type="button" style="background-color: #BBD2F4; border-radius: 16px;"
+                            data-bs-dismiss="modal" class="btn">Xác nhận</button>
                     </div>
-
-                    <div class="mb-2">
-                        <label for="ngay" class="form-label">Ngày thu nhập</label>
-                        <input v-model="sua_thu.ngay" type="date" class="form-control" id="ngay" />
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="moTa" class="form-label">Mô tả</label>
-                        <textarea v-model="sua_thu.mo_ta" class="form-control" id="moTa" rows="2"
-                            placeholder="Value"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn  " 
-                        style="background-color: #BBD2F4; border-radius: 16px;" data-bs-dismiss="modal">Hủy</button>
-                    <button v-on:click="suaThu()"
-                        style="background-color: #BBD2F4; border-radius: 16px;" type="button" data-bs-dismiss="modal" class="btn">Xác nhận</button>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Modal Sửa -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background-color: #DDE8F5; border-radius: 16px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sửa khoản thu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <label for="soTien" class="form-label">Số tiền</label>
+                            <input v-model="sua_thu.so_tien" type="number" class="form-control" id="soTien" />
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="danhMuc" class="form-label">Danh Mục</label>
+                            <select v-model="sua_thu.ma_danh_muc" class="form-select" id="danhMuc">
+                                <option v-for="dm in danh_mucs" :key="dm.id" :value="dm.id">{{ dm.ten_danh_muc }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="ngay" class="form-label">Ngày thu nhập</label>
+                            <input v-model="sua_thu.ngay_giao_dich" type="date" class="form-control" id="ngay" />
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="moTa" class="form-label">Ghi chú</label>
+                            <textarea v-model="sua_thu.ghi_chu" class="form-control" id="moTa" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn" style="background-color: #BBD2F4; border-radius: 16px;"
+                            data-bs-dismiss="modal">Hủy</button>
+                        <button @click="suaThu" style="background-color: #BBD2F4; border-radius: 16px;" type="button"
+                            data-bs-dismiss="modal" class="btn">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </template>
+
 <script>
 import axios from 'axios';
+
 export default {
     data() {
         return {
             l_thu: [],
-            them_thu: { ma_thu: '', ten_thu_nhap: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
-            xoa_thu: { ma_thu: '', ten_thu_nhap: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
-            sua_thu: { ma_thu: '', ten_thu_nhap: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' }
-        }
+            danh_mucs: [],
+            them_thu: { ma_danh_muc: '', so_tien: '', ngay_giao_dich: '', ghi_chu: '' },
+            sua_thu: { id: '', ma_danh_muc: '', so_tien: '', ngay_giao_dich: '', ghi_chu: '' },
+            xoa_thu: { id: '' },
+        };
     },
-
     computed: {
         tongThu() {
-            if (!this.l_thu || this.l_thu.length === 0) return 0;
-            return this.l_thu.reduce((sum, item) => {
-                return sum + Number(item.so_tien || 0);
-            }, 0);
+            return this.l_thu.reduce((sum, item) => sum + Number(item.so_tien || 0), 0);
         },
+        
         thuCaoNhat() {
             if (!this.l_thu || this.l_thu.length === 0) return null;
             return this.l_thu.reduce((max, item) =>
                 Number(item.so_tien) > Number(max.so_tien) ? item : max
             );
         },
+
         thuThapNhat() {
             if (!this.l_thu || this.l_thu.length === 0) return null;
             return this.l_thu.reduce((min, item) =>
                 Number(item.so_tien) < Number(min.so_tien) ? item : min
             );
         },
-        chenhLech() {
-            // giả sử backend có API trả về thu nhập tháng trước
-            // ví dụ this.thuThangTruoc = 20000000
-            if (!this.thuThangTruoc) return 0;
-            return this.tongThu - this.thuThangTruoc;
-        }
     },
     methods: {
         getThu() {
-            axios.get('http://127.0.0.1:8000/api/canhan/thunhap/data',{
-                headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
-                    }
-            })
-                .then(response => {
-                    this.l_thu = response.data.data;
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            axios.get('http://127.0.0.1:8000/api/canhan/thunhap/data', {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token_tai_khoan') }
+            }).then(res => {
+                if (res.data.status) this.l_thu = res.data.data;
+            });
         },
-        themThu() {
+        getDanhMucThu() {
+            axios.get('http://127.0.0.1:8000/api/canhan/thunhap/danhmuc', {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token_tai_khoan') }
+            }).then(res => {
+                this.danh_mucs = res.data.data || [];
+            });
+        },
+        getthemthu() {
             axios
-                .post('http://127.0.0.1:8000/api/canhan/thunhap/them', this.them_thu,{
-                headers: {
+                .post('http://127.0.0.1:8000/api/canhan/thunhap/them', this.them_thu, {
+                    headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
                     }
-            })
+                })
                 .then(response => {
                     if (response.data.status == true) {
                         this.getThu();
@@ -730,74 +715,41 @@ export default {
                     });
                 });
         },
-
-        xoaThu() {
-            axios
-                .post('http://127.0.0.1:8000/api/canhan/thunhap/xoa', this.xoa_thu,{
-                headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
-                    }
-            })
-                .then(response => {
-                    if (response.data.status == true) {
-                        this.getThu();
-                        this.$toast.success(response.data.message);
-                    } else {
-                        this.$toast.error('Xoa that bai');
-                    }
-                })
-                .catch(error => {
-                    var obj = error.response.data.errors;
-                    var result = Object.keys(obj).map((key) => [key, obj[key]]);
-                    console.log(result);
-                    result.forEach((v_1, key_1) => {
-                        var xxx = v_1[1];
-                        xxx.forEach((v, key) => {
-                            this.$toast.error(v);
-                        });
-                    });
-                });
+        openSua(v) {
+            this.sua_thu = { ...v };
         },
-
         suaThu() {
-            axios
-                .post('http://127.0.0.1:8000/api/canhan/thunhap/sua', this.sua_thu,{
-                headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
-                    }
-            })
-                .then(response => {
-                    // console.log(response.data.status);
-                    // console.log(response.data.message);
-                    if (response.data.status == true) {
-                        this.getThu();
-                        this.$toast.success(response.data.message);
-                    } else {
-                        this.$toast.error('Sua moi that bai');
-                    }
-                })
-                .catch(error => {
-                    var obj = error.response.data.errors;
-                    var result = Object.keys(obj).map((key) => [key, obj[key]]);
-                    console.log(result);
-                    result.forEach((v_1, key_1) => {
-                        var xxx = v_1[1];
-                        xxx.forEach((v, key) => {
-                            this.$toast.error(v);
-                        });
-                    });
-                });
+            axios.post('http://127.0.0.1:8000/api/canhan/thunhap/sua', this.sua_thu, {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token_tai_khoan') }
+            }).then(res => {
+                if (res.data.status) this.getThu();
+            });
+        },
+        openXoa(v) {
+            this.xoa_thu.id = v.id;
+        },
+        xoaThu() {
+            axios.post('http://127.0.0.1:8000/api/canhan/thunhap/xoa', this.xoa_thu, {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token_tai_khoan') }
+            }).then(res => {
+                if (res.data.status) this.getThu();
+            });
         },
     },
-
     mounted() {
         this.getThu();
+        this.getDanhMucThu();
     }
-}
+};
 </script>
+
 <style>
 body {
     background-color: #f2f7ff;
+}
+
+.modal-fade {
+    background-color: #dde8f5;
 }
 
 .card-custom {
@@ -829,11 +781,12 @@ body {
     padding: 8px;
 }
 
+
 .dropdown-menu-custom button {
     display: block;
     width: 100%;
     background: #BBD2F4;
-    border: thune;
+    border: none;
     text-align: left;
     padding: 0.25rem 0;
     margin-bottom: 8px;

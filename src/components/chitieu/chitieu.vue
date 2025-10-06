@@ -16,23 +16,24 @@
                             <div class="card-body">
                                 <div>
                                     <div class="row">
-                                        <div class="col-lg-5"><strong>{{ v.ten_chi_tieu }}:</strong> {{ v.so_tien }}
-                                        </div>
-                                        <div class="col-lg-5"><span class="text-small"> <b>Ngày:</b> {{ v.ngay }}</span>
-                                        </div>
-                                        <div class="col-lg-2 text-end">
-                                            <button class="btn btn-light btn-sm" type="button"
-                                                data-bs-toggle="dropdown">
-                                                ...
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-custom">
-                                                <button v-on:click="Object.assign(suaChi, v)" data-bs-toggle="modal"
-                                                    data-bs-target="#updateModal">Chỉnh sửa chi tiêu</button>
-                                                <button v-on:click="Object.assign(xoaChi, v)" data-bs-toggle="modal"
-                                                    data-bs-target="#delModal">Xóa chi tiêu</button>
-                                            </div>
+                                    <div class="col-lg-5">
+                                        <strong>{{ v.ten_danh_muc }}:</strong> {{
+                                            Number(v.so_tien).toLocaleString('vi-VN') }}đ
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <span class="text-small"><b>Ngày:</b> {{ v.ngay_giao_dich }}</span>
+                                    </div>
+                                    <div class="col-lg-2 text-end">
+                                        <button class="btn btn-light btn-sm" type="button"
+                                            data-bs-toggle="dropdown">...</button>
+                                        <div class="dropdown-menu dropdown-menu-custom">
+                                            <button class="dropdown-item"  @click="openSua(v)" data-bs-toggle="modal"
+                                                data-bs-target="#updateModal">Chỉnh sửa</button>
+                                            <button class="dropdown-item"  @click="openXoa(v)" data-bs-toggle="modal"
+                                                data-bs-target="#delModal">Xóa</button>
                                         </div>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -46,11 +47,7 @@
             <div class="col-md-6" style="height: 100%;">
                 <h5><strong>Thêm Chi tiêu</strong></h5>
                 <div class="card-custom mt-2 background-color">
-
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Tên chi tiêu</label>
-                        <input v-model="themChi.ten_chi_tieu" type="text" class="form-control" />
-                    </div>
+ 
 
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Số tiền</label>
@@ -60,21 +57,20 @@
 
                     <div class="mb-2">
                         <label for="danhMuc" class="form-label">Danh Mục</label>
-                        <select v-model="themChi.danh_muc" class="form-select" id="danhMuc">
-                            <option>Lương</option>
-                            <option>Chứng khoán</option>
-                            <option>Trợ cấp</option>
+                        <select v-model="themChi.ma_danh_muc" class="form-select" id="danhMuc">
+                            <option disabled value="">-- Chọn danh mục --</option>
+                            <option v-for="dm in danh_mucs" :key="dm.id" :value="dm.id">{{ dm.ten_danh_muc }}</option>
                         </select>
                     </div>
 
                     <div class="mb-2">
                         <label for="ngay" class="form-label">Ngày Chi tiêu</label>
-                        <input v-model="themChi.ngay" type="date" class="form-control" id="ngay" />
+                        <input v-model="themChi.ngay_giao_dich" type="date" class="form-control" id="ngay" />
                     </div>
 
                     <div class="mb-2">
                         <label for="moTa" class="form-label">Mô tả</label>
-                        <textarea v-model="themChi.mo_ta" class="form-control" id="moTa" rows="2"
+                        <textarea v-model="themChi.ghi_chu" class="form-control" id="moTa" rows="2"
                             placeholder="Value"></textarea>
                     </div>
                     <div class="text-center mt-3">
@@ -587,7 +583,7 @@
 
                 <!-- Header -->
                 <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold" id="delModalLabel">Xóa khoản chi {{ xoaChi.ten_chi_tieu }}</h5>
+                    <h5 class="modal-title fw-bold" id="delModalLabel">Xóa khoản chi này</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -604,7 +600,7 @@
                 <div class="modal-footer border-0 justify-content-center">
                     <button v-on:click="getxoaChi()" type="button"
                         style="background-color: #BBD2F4; border-radius: 16px;" data-bs-dismiss="modal"
-                        class="btn px-4"><b>Xóa</b></button>
+                        class="btn px-4"><b>Xác nhận</b></button>
                     <button type="button" style="background-color: #BBD2F4; border-radius: 16px;" class="btn  px-4"
                         data-bs-dismiss="modal"><b>Hủy</b></button>
                 </div>
@@ -626,10 +622,7 @@
                 <div class="modal-body ms-4 me-4"
                     style="background-color: #DDE8F5; border-radius: 16px; padding: 15px;">
  
-                    <div class="mb-2">
-                        <label for="soTien" class="form-label">Tên chi tiêu</label>
-                        <input v-model="suaChi.ten_chi_tieu" type="text" class="form-control" />
-                    </div>
+                    
 
                     <div class="mb-2">
                         <label for="soTien" class="form-label">Số tiền</label>
@@ -639,21 +632,20 @@
 
                     <div class="mb-2">
                         <label for="danhMuc" class="form-label">Danh Mục</label>
-                        <select v-model="suaChi.danh_muc" class="form-select" id="danhMuc">
-                            <option>Lương</option>
-                            <option>Chứng khoán</option>
-                            <option>Trợ cấp</option>
+                        <select v-model="suaChi.ma_danh_muc" class="form-select" id="danhMuc">
+                            <option disabled value="">-- Chọn danh mục --</option>
+                            <option v-for="dm in danh_mucs" :key="dm.id" :value="dm.id">{{ dm.ten_danh_muc }}</option>
                         </select>
                     </div>
 
                     <div class="mb-2">
                         <label for="ngay" class="form-label">Ngày Chi tiêu</label>
-                        <input v-model="suaChi.ngay" type="date" class="form-control" id="ngay" />
+                        <input v-model="suaChi.ngay_giao_dich" type="date" class="form-control" id="ngay" />
                     </div>
 
                     <div class="mb-2">
                         <label for="moTa" class="form-label">Mô tả</label>
-                        <textarea v-model="suaChi.mo_ta" class="form-control" id="moTa" rows="2"
+                        <textarea v-model="suaChi.ghi_chu" class="form-control" id="moTa" rows="2"
                             placeholder="Value"></textarea>
                     </div>
 
@@ -663,7 +655,7 @@
                 <div class="modal-footer border-0 justify-content-center">
                     <button v-on:click="getsuaChi()" type="button"
                         style="background-color: #BBD2F4; border-radius: 16px;" data-bs-dismiss="modal"
-                        class="btn px-4"><b>Sửa</b></button>
+                        class="btn px-4"><b>Xác nhận</b></button>
                     <button type="button" style="background-color: #BBD2F4; border-radius: 16px;" class="btn  px-4"
                         data-bs-dismiss="modal"><b>Hủy</b></button>
                 </div>
@@ -675,16 +667,24 @@
 import axios from 'axios';
 export default {
     data() {
+        // return {
+        //     l_chitieu: [],
+        //     themChi: { id_tai_khoan: "", ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
+        //     xoaChi: {id_tai_khoan: "",  ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
+        //     suaChi: {id_tai_khoan: "",  ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
+
+        // };
         return {
             l_chitieu: [],
-            themChi: { id_tai_khoan: "", ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
-            xoaChi: {id_tai_khoan: "",  ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
-            suaChi: {id_tai_khoan: "",  ma_chi: '', ten_chi_tieu: '', danh_muc: '', so_tien: '', ngay: '', mo_ta: '' },
-
+            danh_mucs: [],
+            themChi: { ma_danh_muc: '', so_tien: '', ngay_giao_dich: '', ghi_chu: '' },
+            xoaChi: { id: '', ma_danh_muc: '', so_tien: '', ngay_giao_dich: '', ghi_chu: '' },
+            suaChi: { id: '' },
         };
     },
     mounted() {
-        this.getChi();
+        this.getChi(); 
+        this.getDanhMucChi();
     },
     computed: {
         tongChi() {
@@ -709,6 +709,15 @@ export default {
         },
     },
     methods: {
+        
+        getDanhMucChi() {
+            axios.get('http://127.0.0.1:8000/api/canhan/chitieu/danhmuc', {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token_tai_khoan') }
+            }).then(res => {
+                this.danh_mucs = res.data.data || [];
+            });
+        },
+
         getChi() {
             axios.get('http://127.0.0.1:8000/api/canhan/chitieu/data', {
                 headers: {
@@ -719,7 +728,7 @@ export default {
                     this.l_chitieu = response.data.data;
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.log(err);   
                 })
         },
         getthemChi() {
@@ -749,6 +758,9 @@ export default {
                     });
                 });
         },
+        openXoa(v) {
+            this.xoaChi.id = v.id;
+        },
         getxoaChi() {
             axios
                 .post('http://127.0.0.1:8000/api/canhan/chitieu/xoa', this.xoaChi, {
@@ -777,34 +789,16 @@ export default {
                 });
         },
 
+        
+        openSua(v) {
+            this.suaChi = { ...v };
+        },
         getsuaChi() {
-            axios
-                .post('http://127.0.0.1:8000/api/canhan/chitieu/sua', this.suaChi, {
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token_tai_khoan')
-                    }
-                })
-                .then(response => {
-                    // console.log(response.data.status);
-                    // console.log(response.data.message);
-                    if (response.data.status == true) {
-                        this.getChi();
-                        this.$toast.success(response.data.message);
-                    } else {
-                        this.$toast.error('Sua moi that bai');
-                    }
-                })
-                .catch(error => {
-                    var obj = error.response.data.errors;
-                    var result = Object.keys(obj).map((key) => [key, obj[key]]);
-                    console.log(result);
-                    result.forEach((v_1, key_1) => {
-                        var xxx = v_1[1];
-                        xxx.forEach((v, key) => {
-                            this.$toast.error(v);
-                        });
-                    });
-                });
+            axios.post('http://127.0.0.1:8000/api/canhan/chitieu/sua', this.suaChi, {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('token_tai_khoan') }
+            }).then(res => {
+                if (res.data.status) this.getChi();
+            });
         },
     }
 
