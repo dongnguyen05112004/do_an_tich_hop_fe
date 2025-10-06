@@ -55,6 +55,10 @@ const routes = [
                 path: "/thongke",
                 component: () => import("../components/thongke/index.vue"),
             },
+            {
+                path: "/danhmuccanhan",
+                component: () => import("../components/danhmuc/index.vue"),
+            },
         ]
     }, 
     {
@@ -103,10 +107,7 @@ const routes = [
                 path: "/danhmucgiadinh",
                 component: () => import("../components/giadinh/danhmucgiadinh/index.vue"),
             },
-            {
-                path: "/danhmuccanhan",
-                component: () => import("../components/danhmuc/index.vue"),
-            },
+            
         ]
     },
 ]

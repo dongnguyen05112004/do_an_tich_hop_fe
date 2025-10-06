@@ -27,7 +27,7 @@
         <div class="col-6 mt-3">
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <h6 class="fw-bold">Danh sách khoản nợ</h6>
-                <button class=" btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#them">Thêm nợ cá
+                <button class=" btn btn-sm mb-3" style="padding: 10px; border-radius: 20px;  background-color: #DDE8F5;" data-bs-toggle="modal" data-bs-target="#them">Thêm nợ cá
                     nhân</button>
             </div>
             <div class="card card-responsive"
@@ -111,7 +111,7 @@
                             </table>
                         </div>
                         <div class="card-footer text-center">
-                            <button type="button" class="btn btn-primary">Đã trả nợ</button>
+                            <button type="button" style="padding: 10px; border-radius: 20px;  background-color: #DDE8F5;" class="btn ">Đã trả nợ</button>
                         </div>
 
                     </div>
